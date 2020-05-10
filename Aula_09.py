@@ -1,40 +1,66 @@
 from tkinter import *
+from PIL import ImageTk,Image
 
-def label2():
-    print("label2")
-    lbl1.grid_forget()
-    lbl3.grid_forget()
-    lbl2.grid(row=1, column=0)
+def direita(numero_imagem):
+    global lbl
+    global btnEsquerdo
+    global btnDireta
 
-def label1():
-    print("label1")
-    lbl2.grid_forget()
-    lbl3.grid_forget()
-    lbl1.grid(row=0, column=0)
+    lbl.grid_forget()
 
-def label3():
-    print("label3")
-    lbl1.grid_forget()
-    lbl2.grid_forget()
-    lbl3.grid(row=0, column=0)
+    lbl = Label(image=imagem_lista[numero_imagem-1])
+    btnDireta = Button(root, text="Direita", command=lambda: direita(numero_imagem+1))
+    btnEsquerdo = Button(root, text="Esquerda", command=lambda: esquerda(numero_imagem-1))
 
+    if numero_imagem == 3:
+        btnDireta = Button(root, text="Direita", state=DISABLED)
+        pass
+
+    lbl.grid(row=0, column=0, columnspan=3)
+    btnDireta.grid(row=1, column=2)
+    btnEsquerdo.grid(row=1, column=0)
+    pass
+
+def esquerda(numero_imagem):
+    global lbl
+    global btnEsquerdo
+    global btnDireta
+
+    lbl.grid_forget()
+
+    lbl = Label(image=imagem_lista[numero_imagem+1])
+    btnDireta = Button(root, text="Direita", command=lambda: direita(numero_imagem+1))
+    btnEsquerdo = Button(root, text="Esquerda", command=lambda: esquerda(numero_imagem-1))
+
+    if numero_imagem == 0:
+        btnEsquerdo = Button(root, text="Esquerdo", state=DISABLED)
+        pass
+
+    lbl.grid(row=0, column=0, columnspan=3)
+    btnDireta.grid(row=1, column=2)
+    btnEsquerdo.grid(row=1, column=0)
+    pass
 
 root = Tk()
+root.iconbitmap("Terminal.ico")
 
-lbl1 = Label(root, text="Exemplo1")
-lbl2 = Label(root, text= "Exemplo2")
-lbl3 = Label(root, text= "Exemplo2")
+img1 = ImageTk.PhotoImage(Image.open("labrador-head.png"))
+img2 = ImageTk.PhotoImage(Image.open("mite-alt.png"))
+img3 = ImageTk.PhotoImage(Image.open("monkey.png"))
+img4 = ImageTk.PhotoImage(Image.open("panda.png"))
 
-lbl1.grid(row=0, column=0)
-lbl2.grid(row=0, column=0)
-lbl3.grid(row=0, column=0)
+imagem_lista = [img1, img2, img3, img4]
 
-btn1 = Button(root, text="Vá para o Label 2", command=label2)
-btn1.grid(row=1, column=0)
+lbl = Label(image=imagem_lista[1])
+lbl.grid(row=0, column=0, columnspan=3)
 
-btn2 = Button(root, text="Vá para o Label 1", command=label1)
-btn2.grid(row=1, column=1)
+btnEsquerdo = Button(root, text="Esquerda", command= lambda: esquerda(0))
+btnEsquerdo.grid(row=1, column=0)
 
-btn3 = Button(root, text="Vá para o Label 3", command=label3)
-btn3.grid(row=1, column=2)
+btnSair = Button(root, text="Sair", command=root.quit)
+btnSair.grid(row=1, column=1)
+
+btnDireta = Button(root, text="Direita", command= lambda: direita(0))
+btnDireta.grid(row=1, column=2)
+
 root.mainloop()
